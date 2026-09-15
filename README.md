@@ -90,7 +90,7 @@ If sync is delayed, use **Export JSON** / **Import JSON** in Settings.
 - **This website:** shows whether Umami was found on the current page.
 - **Track my events:** allow pageviews and custom events from this browser on that site.
 - **Detected sites:** every site where Umami has been seen. Use the toggle per site, or × to forget it.
-- **Blocked requests:** how many Umami send calls this browser has stopped. The toolbar badge shows the count on the current tab, or `OFF` before anything is blocked, or `ON` when tracking is allowed.
+- **Hidden from Umami:** how many pageviews (and any blocked `/api/send` calls) this browser has hidden. The toolbar badge shows the count on the current tab, or `OFF` before anything is hidden, or `ON` when tracking is allowed.
 - **Local and preview sites:** `localhost`, `*.local`, Vercel/Netlify/Cloudflare previews, and similar hosts stay excluded. Edit the list in Settings.
 - **Reload page to apply:** click after changing settings so the current tab picks them up.
 

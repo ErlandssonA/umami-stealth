@@ -2,6 +2,7 @@
   let settings = mergeSettings({});
   let detected = null;
   let scanTimer = 0;
+  let countedHiddenHref = "";
 
   const observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
@@ -140,6 +141,15 @@
 
   function applyCurrentPolicy() {
     applyUmamiDisabled(shouldExcludeVisits(settings, location.hostname, { detected: Boolean(detected) }));
+    maybeCountHidden();
+  }
+
+  function maybeCountHidden() {
+    const exclude = shouldExcludeVisits(settings, location.hostname, { detected: Boolean(detected) });
+    if (!exclude || !detected) return;
+    if (countedHiddenHref === location.href) return;
+    countedHiddenHref = location.href;
+    chrome.runtime.sendMessage({ type: "INCREMENT_HIDDEN", amount: 1 }).catch(() => {});
   }
 
   function reportDetection() {

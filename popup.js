@@ -104,11 +104,11 @@ function renderGlobal() {
   app.classList.toggle("disabled", !settings.enabled);
   const modeLabel = settings.mode === "privacy" ? "Privacy" : "Owner";
   analyticsHostLabel.textContent = `${modeLabel} · ${formatHostSummary(settings)}`;
-  blockedCount.textContent = formatCount(stats.blockedOnTab || stats.blockedTotal || 0);
+  blockedCount.textContent = formatCount(stats.blockedTotal || 0);
   blockedCopy.textContent =
     stats.blockedOnTab > 0
-      ? `${stats.blockedOnTab} blocked on this page · ${stats.blockedTotal || 0} total`
-      : `${stats.blockedTotal || 0} tracking requests blocked in total`;
+      ? `${stats.blockedOnTab} on this page`
+      : "Pageviews and send requests hidden from this browser";
   emptySites.textContent = settings.analyticsHosts.length
     ? `No Umami sites found yet. Visit a site that loads ${settings.analyticsHosts.join(", ")}.`
     : "No Umami sites found yet. Open a website that uses Umami, or add a host in Settings.";

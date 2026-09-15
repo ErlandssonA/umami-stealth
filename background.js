@@ -1,8 +1,10 @@
 importScripts("shared.js");
 
 const blockedByTab = new Map();
-let persistBlockedTimer = 0;
-let pendingBlocked = 0;
+let blockedTotalCache = 0;
+const blockedTotalReady = chrome.storage.local.get("blockedTotal").then((stored) => {
+  blockedTotalCache = Number(stored.blockedTotal) || 0;
+});
 
 const BADGE = {
   exclude: {
@@ -65,11 +67,7 @@ chrome.tabs.onRemoved.addListener((tabId) => {
 if (chrome.declarativeNetRequest?.onRuleMatchedDebug) {
   chrome.declarativeNetRequest.onRuleMatchedDebug.addListener((info) => {
     const tabId = info?.request?.tabId;
-    if (tabId >= 0) {
-      blockedByTab.set(tabId, (blockedByTab.get(tabId) || 0) + 1);
-      refreshBadgeForTab(tabId);
-    }
-    bumpBlockedTotal();
+    incrementHidden(tabId >= 0 ? tabId : -1);
   });
 }
 
@@ -190,9 +188,15 @@ async function handleMessage(message, sender) {
       await writeSettings({ detectedHosts, trackOnHosts });
       return { ok: true, settings: await getSettings() };
     }
+    case "INCREMENT_HIDDEN": {
+      const tabId = sender.tab?.id;
+      await incrementHidden(tabId >= 0 ? tabId : -1, Number(message.amount) || 1);
+      return { ok: true, stats: await getStats() };
+    }
     case "RESET_BLOCKED":
+      await blockedTotalReady;
       blockedByTab.clear();
-      pendingBlocked = 0;
+      blockedTotalCache = 0;
       await writeSettings({ blockedTotal: 0 });
       await refreshActiveBadge();
       return { ok: true, settings: await getSettings(), stats: await getStats() };
@@ -218,26 +222,26 @@ async function handleMessage(message, sender) {
 }
 
 async function getStats() {
+  await blockedTotalReady;
   const settings = await getSettings();
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   return {
-    blockedTotal: settings.blockedTotal,
+    blockedTotal: blockedTotalCache,
     blockedOnTab: tab?.id != null ? blockedByTab.get(tab.id) || 0 : 0,
     extensionId: chrome.runtime.id,
     syncError: settings.syncError,
   };
 }
 
-function bumpBlockedTotal() {
-  pendingBlocked += 1;
-  clearTimeout(persistBlockedTimer);
-  persistBlockedTimer = setTimeout(async () => {
-    const add = pendingBlocked;
-    pendingBlocked = 0;
-    if (!add) return;
-    const settings = await getSettings();
-    await writeSettings({ blockedTotal: settings.blockedTotal + add });
-  }, 250);
+async function incrementHidden(tabId, amount = 1) {
+  await blockedTotalReady;
+  const add = Math.max(1, Number(amount) || 1);
+  blockedTotalCache += add;
+  if (tabId >= 0) {
+    blockedByTab.set(tabId, (blockedByTab.get(tabId) || 0) + add);
+    refreshBadgeForTab(tabId);
+  }
+  await writeSettings({ blockedTotal: blockedTotalCache });
 }
 
 async function updateNetworkRules() {

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Umami Stealth",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Hide your own visits and events from Umami Analytics.",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy+g1et2aSludwiW7yJg4nhucf5tR0bN8V/ga4eZK1/QOgji2i2w3UCeR41kW564pasYXCKEQk5hbHY6v2PhkG4S//ChbTjWuxrTeWTpdgS8VDJPAc4qCfXxm5blGXaHBJZditfPWPZLLhYBtl1ouHwMU/SYGRUpxXkdMzP4KHYNkbJrlsW94TE6G2LnYvhAdivlmyxChjHOtkEqZI8o4PPl/z37gK3MDu1rcSWfqmr0HELdj+cPHAd+cubScf2doBphQIu66TVIFwhJFtA5ApZnBtVt1UUIcb7icDfHXmiCACe5F8/lTz1pN8d2c+bKmQyL0DIvvC8ZB7e9c+H49jQIDAQAB",
   "permissions": [
