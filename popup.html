@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Umami Stealth</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body class="popup">
+    <main class="app">
+      <header class="header">
+        <div class="brand">
+          <img class="logo" src="icons/icon48.png" alt="" />
+          <div>
+            <h1>Umami Stealth</h1>
+            <p class="host-label" id="analytics-host-label">No host configured</p>
+          </div>
+        </div>
+        <label class="switch" title="Enable or disable the extension">
+          <input id="enabled-toggle" type="checkbox" />
+          <span class="slider"></span>
+        </label>
+      </header>
+
+      <section class="card stats-card">
+        <div>
+          <p class="row-title">Blocked requests</p>
+          <p class="row-copy" id="blocked-copy">Tracking requests stopped from this browser.</p>
+        </div>
+        <strong class="stat" id="blocked-count">0</strong>
+      </section>
+
+      <section class="card" id="page-card">
+        <div class="card-head">
+          <h2>This website</h2>
+          <span class="pill" id="status-pill">Checking</span>
+        </div>
+        <p class="site" id="site-hostname">—</p>
+        <dl class="meta" id="tracker-meta" hidden>
+          <div>
+            <dt>Website ID</dt>
+            <dd id="website-id">—</dd>
+          </div>
+          <div>
+            <dt>Tracker</dt>
+            <dd id="script-src">—</dd>
+          </div>
+        </dl>
+        <p class="hint" id="page-hint">Looking for an Umami tracker on this page.</p>
+
+        <div class="row" id="track-row" hidden>
+          <div>
+            <p class="row-title">Track my events</p>
+            <p class="row-copy" id="track-copy">Allow pageviews and custom events from this browser on this site.</p>
+          </div>
+          <label class="switch compact">
+            <input id="track-toggle" type="checkbox" />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <button class="reload" id="reload-btn" hidden>Reload page to apply</button>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>Detected sites</h2>
+          <span class="count" id="site-count">0</span>
+        </div>
+        <ul class="sites" id="site-list"></ul>
+        <p class="empty" id="empty-sites">No Umami sites found yet. Open a website that uses Umami, or add a host in Settings.</p>
+      </section>
+
+      <button class="ghost" id="settings-btn" type="button">Settings</button>
+    </main>
+    <script src="shared.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "Umami Stealth",
+  "version": "2.0.0",
+  "description": "Hide your own visits and events from Umami Analytics.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy+g1et2aSludwiW7yJg4nhucf5tR0bN8V/ga4eZK1/QOgji2i2w3UCeR41kW564pasYXCKEQk5hbHY6v2PhkG4S//ChbTjWuxrTeWTpdgS8VDJPAc4qCfXxm5blGXaHBJZditfPWPZLLhYBtl1ouHwMU/SYGRUpxXkdMzP4KHYNkbJrlsW94TE6G2LnYvhAdivlmyxChjHOtkEqZI8o4PPl/z37gK3MDu1rcSWfqmr0HELdj+cPHAd+cubScf2doBphQIu66TVIFwhJFtA5ApZnBtVt1UUIcb7icDfHXmiCACe5F8/lTz1pN8d2c+bKmQyL0DIvvC8ZB7e9c+H49jQIDAQAB",
+  "permissions": [
+    "storage",
+    "tabs",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "declarativeNetRequestFeedback"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Umami Stealth",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["shared.js", "content.js"],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "umami-stealth@extension",
+      "strict_min_version": "121.0"
+    }
+  }
+}

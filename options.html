@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Umami Stealth settings</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body class="page">
+    <main class="app">
+      <header class="header">
+        <div class="brand">
+          <img class="logo" src="icons/icon48.png" alt="" />
+          <div>
+            <h1>Umami Stealth</h1>
+            <p class="host-label">Settings sync through Brave Sync, Chrome sync, or Edge sync.</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>Mode</h2>
+        </div>
+        <div class="choice-grid">
+          <label class="choice">
+            <input type="radio" name="mode" value="owner" />
+            <span>
+              <strong>Owner</strong>
+              <span>Only hide yourself from the Umami servers you add. Best if you run the analytics.</span>
+            </span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="mode" value="privacy" />
+            <span>
+              <strong>Privacy</strong>
+              <span>Hide this browser from every Umami tracker it finds, including other people’s sites.</span>
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>Umami hosts</h2>
+          <span class="count" id="host-count">0</span>
+        </div>
+        <p class="hint">Add Cloud, a self-hosted instance, or both. In Owner mode only these servers are blocked.</p>
+        <ul class="sites" id="host-list"></ul>
+        <p class="empty" id="empty-hosts">No hosts yet. Add Umami Cloud, type a hostname, or visit a site that embeds Umami.</p>
+        <div class="inline-form">
+          <input
+            id="host-input"
+            type="text"
+            spellcheck="false"
+            autocomplete="off"
+            placeholder="analytics.example.com"
+          />
+          <button class="reload compact-btn" id="add-host-btn" type="button">Add</button>
+        </div>
+        <button class="ghost" id="cloud-btn" type="button">Add Umami Cloud</button>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>Local and preview sites</h2>
+          <label class="switch compact" title="Always exclude development sites">
+            <input id="dev-toggle" type="checkbox" />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <p class="hint">When this is on, matching hosts stay excluded even if “Track my events” is enabled.</p>
+        <label class="field">
+          <span>Host patterns, one per line. Use <code>*.vercel.app</code> for suffixes.</span>
+          <textarea id="dev-patterns" spellcheck="false" rows="8"></textarea>
+        </label>
+        <div class="button-row">
+          <button class="reload compact-btn" id="save-dev-btn" type="button">Save patterns</button>
+          <button class="ghost" id="reset-dev-btn" type="button">Restore defaults</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>Sync</h2>
+          <span class="pill" id="sync-pill">Checking</span>
+        </div>
+        <p class="hint" id="sync-hint">Settings use your browser sync account.</p>
+        <dl class="meta">
+          <div>
+            <dt>Extension ID</dt>
+            <dd id="extension-id">—</dd>
+          </div>
+        </dl>
+        <p class="footnote">
+          Use the same Umami Stealth folder on every device. The ID is pinned in <code>manifest.json</code>, which is
+          what Brave Sync needs to treat them as the same extension. Enable <strong>Settings</strong> in
+          <code>brave://settings/braveSync/setup</code>. Unpacked extensions themselves are not installed by Sync — load
+          this folder on each device once.
+        </p>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>Backup</h2>
+        </div>
+        <p class="hint">Export or import settings if you want a file copy, or if sync is delayed.</p>
+        <div class="button-row">
+          <button class="reload compact-btn" id="export-btn" type="button">Export JSON</button>
+          <button class="ghost" id="import-btn" type="button">Import JSON</button>
+          <button class="ghost" id="reset-blocked-btn" type="button">Reset blocked count</button>
+        </div>
+        <input id="import-file" type="file" accept="application/json,.json" hidden />
+        <p class="hint" id="backup-status"></p>
+      </section>
+    </main>
+    <script src="shared.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>
